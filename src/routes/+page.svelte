@@ -1,3 +1,18 @@
+<script lang="ts">
+	import { goto } from '$app/navigation';
+	import pb from '$lib/pocketbase';
+
+	async function loginWithGoogle() {
+		const authData = await pb.collection('users').authWithOAuth2({ provider: 'google' });
+		// Redirect to dashboard on successful login
+		console.log(authData);
+		if (authData) {
+			// Redirect to dashboard
+			goto('/dashboard');
+		}
+	}
+</script>
+
 <!-- YOU CAN DELETE EVERYTHING IN THIS PAGE -->
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -19,14 +34,7 @@
 		</figure>
 		<!-- / -->
 		<div class="flex justify-center space-x-2">
-			<a
-				class="btn variant-filled"
-				href="https://skeleton.dev/"
-				target="_blank"
-				rel="noreferrer"
-			>
-				Launch Documentation
-			</a>
+			<button class="btn variant-filled" on:click={loginWithGoogle}> Login with Google </button>
 		</div>
 		<div class="space-y-2">
 			<p>Try editing the following:</p>
@@ -46,7 +54,8 @@
 	}
 	.img-bg {
 		@apply absolute z-[-1] rounded-full blur-[50px] transition-all;
-		animation: pulse 5s cubic-bezier(0, 0, 0, 0.5) infinite,
+		animation:
+			pulse 5s cubic-bezier(0, 0, 0, 0.5) infinite,
 			glow 5s linear infinite;
 	}
 	@keyframes glow {
